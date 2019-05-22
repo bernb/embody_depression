@@ -20,15 +20,6 @@ labels={'Neutral'
 
 mask=imread('images/mask.png');
 
-%% initialize matrices for mean values (per emotion and patient)
-mw_gesamt = zeros(length(subjects), 7);
-mw_beine = zeros(length(subjects), 7);
-mw_arme = zeros(length(subjects), 7);
-mw_kopf = zeros(length(subjects), 7);
-mw_rumpf = zeros(length(subjects), 7);
-
-
-
 for s=1:length(subjects) % loop over the subjects
     % skip dot and dotdot folders (if using macos or linux)
     if(strcmp(subjects(s).name(1),'.'))
@@ -57,28 +48,15 @@ for s=1:length(subjects) % loop over the subjects
         csvwrite(sprintf('results/aktivierung_exp.%d.csv', condit),reize(:,:,condit));
     end
     
-    %%calculate mean activation value (per person and emotion)
-    [zeilen,spalten]=size(resmat(:,:,s));
-    %summen=zeros(6);
-    for condit=1:7
-        for i=1:zeilen
-            for j=1:spalten
-                mw_gesamt(s,condit) = mw_gesamt(s,condit) + reize(i,j,condit); %mw enth�lt jetzt erstmal _Summen_werte, noch nicht _Mittel_werte!
-                if (i>289) && (j>33) && (j<spalten-32) %Beine
-                    mw_beine(s,condit) = mw_beine(s,condit) + reize(i,j,condit);
-                end
-                if (j < 34) | (j > spalten - 34) %Arme
-                    mw_arme(s,condit) = mw_arme(s,condit) + reize(i,j,condit);
-                end
-                if (i >= 77) && (i <=289) && (j >=34) &&(j<=spalten-33) %Rumpf
-                    mw_rumpf(s,condit) = mw_rumpf(s,condit) + reize(i,j,condit);
-                end
-                if (i <=76) %Kopf
-                    mw_kopf(s,condit) = mw_kopf(s,condit) + reize(i,j,condit);
-                end
-            end
-        end
-    end
+    % initialize matrices for mean values (per emotion and patient)
+    mw_gesamt = zeros(length(subjects), 7);
+    mw_beine = zeros(length(subjects), 7);
+    mw_arme = zeros(length(subjects), 7);
+    mw_kopf = zeros(length(subjects), 7);
+    mw_rumpf = zeros(length(subjects), 7);
+
+    
+    
     
     %% store result
     save(['results/' subjects(s).name '_preprocessed.mat'],'resmat')
@@ -96,7 +74,6 @@ for s=1:length(subjects) % loop over the subjects
     % visualize all responses for each subject into a grid of numcolumns
     plotcols = 8; %set as desired
     plotrows = 1; % number of rows is equal to number of emotions+1 (for the colorbar)
-    plotrows_einzel = ceil((NC+1)/plotcols);
     
     for n=1:7 % 7= Anzahl der Reize + Grundzustand
         figure(s)
@@ -175,33 +152,6 @@ end
 % Bestimme Anzahl der Bildpixel (um Durchschnittswerte der Aktivierung zu
 % erzielen)
 
-%mask=uint8(imread('mask.png'));
-%csvwrite('mask.csv', mask);
-anzahl_pixel_gesamt=0;
-anzahl_pixel_beine=0;
-anzahl_pixel_arme=0;
-anzahl_pixel_kopf=0;
-anzahl_pixel_rumpf=0;
-
-for i=1:zeilen
-    for j=1:spalten
-        if mask(i,j)> 128
-            anzahl_pixel_gesamt=anzahl_pixel_gesamt+1;
-            if (i>289) && (j>33) && (j<spalten-32) %Beine
-                anzahl_pixel_beine = anzahl_pixel_beine + 1;
-            end
-            if (j < 34) | (j > spalten - 34) %Arme
-                anzahl_pixel_arme = anzahl_pixel_arme + 1;
-            end
-            if (i >= 77) && (i <=289) && (j >=34) &&(j<=spalten-33) %Rumpf
-                anzahl_pixel_rumpf = anzahl_pixel_rumpf + 1;
-            end
-            if (i <=76) %Kopf
-                anzahl_pixel_kopf = anzahl_pixel_kopf + 1;
-            end
-        end
-    end
-end
 
 mw_gesamt = mw_gesamt/anzahl_pixel_gesamt;
 mw_beine = mw_beine/anzahl_pixel_beine;

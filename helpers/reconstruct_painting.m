@@ -27,7 +27,6 @@ function [result_matrix, condition] = reconstruct_painting(data, base)
         over=imfilter(over,h);
         % we subtract left part minus right part of painted area
         % values are hard-coded to our web layout
-        over2 = over(10:531,33:203)-over(10:531,696:866);
         result_matrix(:,:,n) = over(10:531,33:203,:)-over(10:531,696:866,:);
         % Summenbildung der Aktivierungsmuster aus den unterschiedlichen 
         % Probanden zu jeder Bedingung

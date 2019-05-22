@@ -55,7 +55,14 @@ for s=1:length(subjects) % loop over the subjects
     mw_kopf = zeros(length(subjects), 7);
     mw_rumpf = zeros(length(subjects), 7);
 
-    
+    [... 
+        mw_gesamt(s,:), ...
+        mw_beine(s,:), ...
+        mw_arme(s,:), ...
+        mw_kopf(s,:), ...
+        mw_rumpf(s,:) ...
+     ] ...
+     = calc_mean_activation(reize, mask);
     
     
     %% store result
@@ -147,17 +154,6 @@ for n=1:7 % 7= Anzahl der Reize + Grundzustand
         saveas(gcf,['results/total_experimental.png'])
     end
 end
-
-%% Anzahl der Bildpixel bestimmen (f�r Mittelwertberechnung)
-% Bestimme Anzahl der Bildpixel (um Durchschnittswerte der Aktivierung zu
-% erzielen)
-
-
-mw_gesamt = mw_gesamt/anzahl_pixel_gesamt;
-mw_beine = mw_beine/anzahl_pixel_beine;
-mw_arme = mw_arme/anzahl_pixel_arme;
-mw_kopf = mw_kopf/anzahl_pixel_kopf;
-mw_rumpf = mw_rumpf/anzahl_pixel_rumpf;
 
 %%Durchschnittswerte in .csv-Dateien speichern
 csvwrite('results/mittelwerte_kontr_gesamt.csv', mw_gesamt);

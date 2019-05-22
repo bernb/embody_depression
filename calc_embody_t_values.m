@@ -37,43 +37,8 @@ for s=1:length(subjects) % loop over the subjects
     
     %% Data loading
     data=load_subj([basepath '/' subjects(s).name],2);
-    % number of pictures/ of sub-folders in the folder corresponding to
-    % the current subject
-    NC=length(data);
     
-    %% Painting reconstruction
-    % 'data' now contains all mouse movements. What we need are the mouse
-    % locations while the button was pressed (i.e. during painting)
-    % Furthermore, the painting tool has a brush size. We recreate that
-    % using image filter
-    
-    % initialize the container for the data
-    for n=1:NC
-        resmat(:,:,n) = zeros(522,171); %zero matrix of the size of the base2 picture
-        condition(:,:,n) = zeros(522,171); %zero matrix of the size of the base2 picture
-    end
-    
-    for n=1:NC % loop over the pictures = conditions/ .csv-files
-        T=length(data(n).paint(:,2)); % number of mouse locations
-        over=zeros(size(base,1),size(base,2)); % empty matrix to reconstruct painting
-        for t=1:T
-            y=ceil(data(n).paint(t,3)+1);
-            x=ceil(data(n).paint(t,2)+1);
-            if(x<=0) x=1; end
-            if(y<=0) y=1; end
-            if(x>=900) x=900; end % hardcoded for our experiment, you need to change it if you changed layout
-            if(y>=600) y=600; end % hardcoded for our experiment, you need to change it if you changed layout
-            over(y,x)=over(y,x)+1;
-        end
-        % Simulate brush size with a gaussian disk
-        h=fspecial('gaussian',[15 15],5);
-        over=imfilter(over,h);
-        % we subtract left part minus right part of painted area
-        % values are hard-coded to our web layout
-        over2=over(10:531,33:203,:)-over(10:531,696:866,:); %bilde Differenz aus Aktivierungs- und Deaktivierungsmuster
-        resmat(:,:,n)=over2;
-        condition(:,:,n) = condition(:,:,n) + over2; % Summenbildung der Aktivierungsmuster aus den unterschiedlichen Probanden zu jeder Bedingung
-    end
+    [resmat, condition] = reconstruct_painting(data, base);
     
     reize(:,:,1) = resmat(:,:,10) + resmat(:,:,18) + resmat(:,:,20) + resmat(:,:,22); % neutral
     reize(:,:,2) = resmat(:,:,2) + resmat(:,:,6) + resmat(:,:,21) + resmat(:,:,23); %anger
@@ -93,7 +58,7 @@ for s=1:length(subjects) % loop over the subjects
     end
     
     %%calculate mean activation value (per person and emotion)
-    [zeilen,spalten]=size(over2);
+    [zeilen,spalten]=size(resmat(:,:,s));
     %summen=zeros(6);
     for condit=1:7
         for i=1:zeilen
@@ -168,7 +133,7 @@ reize(:,:,5) = condition(:,:,8) + condition(:,:,15) + condition(:,:,19) + condit
 reize(:,:,6) = condition(:,:,9) + condition(:,:,11) + condition(:,:,14) + condition(:,:,16); %fear
 
 %% store result (commented)
-save(['preprocessed_total/total_reize.mat'],'reize');
+save('preprocessed_total/total_reize.mat','reize');
 
 %% visualize total data
 Mtot=0.2; %M=max(abs(reize(:))); % max range for colorbar

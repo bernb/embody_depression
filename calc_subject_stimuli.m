@@ -42,11 +42,11 @@ for s=1:length(subjects) % loop over the subjects
     
     % Speichern in .csv-Datei
     for condit = 1:7
-        filename = sprintf('results/aktivierung_exp.%d.csv', condit);
+        filename = sprintf('output/stimuli_files/aktivierung_exp.%d.csv', condit);
         if ~isfile(filename)
             fclose(fopen(filename,'w'));
         end
-        csvwrite(sprintf('results/aktivierung_exp.%d.csv', condit),reize(:,:,condit));
+        csvwrite(sprintf('output/stimuli_files/aktivierung_exp.%d.csv', condit),reize(:,:,condit));
     end
     
     % initialize matrices for mean values (per emotion and patient)
@@ -67,8 +67,8 @@ for s=1:length(subjects) % loop over the subjects
     
     
     % store result
-    save(['results/' subjects(s).name '_preprocessed.mat'],'resmat')
-    save(['results/' subjects(s).name '_reize.mat'],'reize')
+    save(['output/stimuli_files/' subjects(s).name '_preprocessed.mat'],'resmat')
+    save(['output/stimuli_files/' subjects(s).name '_reize.mat'],'reize')
     
     visualize_subject(reize, base2, mask, labels, s);
     
@@ -85,12 +85,12 @@ reize(:,:,6) = condition(:,:,9) + condition(:,:,11) + condition(:,:,14) + condit
 %visualize_total(reize, base2);
 
 % store result (commented)
-save('preprocessed_total/total_reize.mat','reize');
+save('output/stimuli_files/total_reize.mat','reize');
 
 %Durchschnittswerte in .csv-Dateien speichern
-csvwrite('results/mittelwerte_kontr_gesamt.csv', mw_gesamt);
-csvwrite('results/mittelwerte_kontr_beine.csv', mw_beine);
-csvwrite('results/mittelwerte_kontr_arme.csv', mw_arme);
-csvwrite('results/mittelwerte_kontr_kopf.csv', mw_kopf);
-csvwrite('results/mittelwerte_kontr_rumpf.csv', mw_rumpf);
+csvwrite('output/stimuli_files/mittelwerte_kontr_gesamt.csv', mw_gesamt);
+csvwrite('output/stimuli_files/mittelwerte_kontr_beine.csv', mw_beine);
+csvwrite('output/stimuli_files/mittelwerte_kontr_arme.csv', mw_arme);
+csvwrite('output/stimuli_files/mittelwerte_kontr_kopf.csv', mw_kopf);
+csvwrite('output/stimuli_files/mittelwerte_kontr_rumpf.csv', mw_rumpf);
 end

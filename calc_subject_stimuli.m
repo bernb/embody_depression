@@ -85,7 +85,7 @@ reize(:,:,6) = condition(:,:,9) + condition(:,:,11) + condition(:,:,14) + condit
 %visualize_total(reize, base2);
 
 % store result (commented)
-save('output/stimuli_files/total_reize.mat','reize');
+save('output/stimuli_files/total/total_reize.mat','reize');
 
 %Durchschnittswerte in .csv-Dateien speichern
 csvwrite('output/stimuli_files/mittelwerte_kontr_gesamt.csv', mw_gesamt);

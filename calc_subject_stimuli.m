@@ -1,4 +1,4 @@
-function calc_embody_t_values(basepath)
+function calc_subject_stimuli(basepath)
 if nargin < 1
     basepath = 'data/subjects';
 end

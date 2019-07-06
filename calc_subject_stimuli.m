@@ -69,10 +69,4 @@ end
 % store result (commented)
 save('output/stimuli_files/total/total_reize.mat','reize');
 
-%Durchschnittswerte in .csv-Dateien speichern
-csvwrite('output/stimuli_files/mittelwerte_kontr_gesamt.csv', mw_gesamt);
-csvwrite('output/stimuli_files/mittelwerte_kontr_beine.csv', mw_beine);
-csvwrite('output/stimuli_files/mittelwerte_kontr_arme.csv', mw_arme);
-csvwrite('output/stimuli_files/mittelwerte_kontr_kopf.csv', mw_kopf);
-csvwrite('output/stimuli_files/mittelwerte_kontr_rumpf.csv', mw_rumpf);
 end

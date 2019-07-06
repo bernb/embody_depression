@@ -46,12 +46,12 @@ for s=1:length(subjects) % loop over the subjects
     reize(:,:,7)= resmat(:,:,1); %ground state
     
     % Speichern in .csv-Datei
-    for condit = 1:7
-        filename = sprintf('output/stimuli_files/aktivierung_exp.%d.csv', condit);
+    for condition = 1:7
+        filename = sprintf('output/stimuli_files/aktivierung_exp.%d.csv', condition);
         if ~isfile(filename)
             fclose(fopen(filename,'w'));
         end
-        csvwrite(sprintf('output/stimuli_files/aktivierung_exp.%d.csv', condit),reize(:,:,condit));
+        csvwrite(sprintf('output/stimuli_files/aktivierung_exp.%d.csv', condition),reize(:,:,condition));
     end
     
     % initialize matrices for mean values (per emotion and patient)

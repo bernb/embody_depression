@@ -1,4 +1,4 @@
-function [t_thres, t_thres_no_assump] = multiple_comparison_correction(data, subject_count)
+function [t_thres, t_thres_no_assump] = multiple_comparison_correction(data, subject_count, mask)
 % Input: Data for FDR testing
 % Output: 
 % t_thres: t threshold for assumption of independence or positive

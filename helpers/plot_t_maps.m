@@ -1,4 +1,4 @@
-function plot_t_maps(tdata, tdata_einzel)
+function plot_t_maps(tdata, tdata_einzel, emotion_count, stimuli_count, mask)
 
 M=5; % max range for colorbar
 NumCol=64;
@@ -14,7 +14,7 @@ hotcoldmap=[
 
 % plotting
 plotcols = 8; %set as desired
-plotrows = ceil((NC+1)/plotcols); % number of rows is equal to number of conditions+1 (for the colorbar)
+plotrows = ceil((emotion_count+1)/plotcols); % number of rows is equal to number of conditions+1 (for the colorbar)
 base=uint8(imread('base.png'));
 base2=base(10:531,33:203,:); % single image base
 labels={'Neutral'
@@ -24,7 +24,7 @@ labels={'Neutral'
         'Sadness'
         'Fear'
         'Ground state'};
-for n=1:NC
+for n=1:emotion_count
     figure(100)
     subplot(plotrows,plotcols,n)
     imagesc(base2);
@@ -38,7 +38,7 @@ for n=1:NC
     colormap(hotcoldmap);
     set(fh,'AlphaData',mask)
     title(labels(n),'FontSize',10)
-    if(n==NC)
+    if(n==emotion_count)
         subplot(plotrows,plotcols,n+1)
         fh=imagesc(ones(size(base2)),[-M,M]);
         axis('off');
@@ -49,9 +49,9 @@ for n=1:NC
 end
 
 
-plotrows_einzel = ceil((NP+1)/plotcols); % number of rows is equal to number of conditions+1 (for the colorbar)
+plotrows_einzel = ceil((stimuli_count+1)/plotcols); % number of rows is equal to number of conditions+1 (for the colorbar)
 %M=0.1; % max range for colorbar
-for n=1:NP
+for n=1:stimuli_count
     figure(101)
     subplot(plotrows_einzel,plotcols,n)
     imagesc(base2);
@@ -65,7 +65,7 @@ for n=1:NP
     colormap(hotcoldmap);
     set(fh,'AlphaData',mask)
     title(n-1,'FontSize',10)
-    if(n==NP)
+    if(n==stimuli_count)
         subplot(plotrows_einzel,plotcols,n+1)
         fh=imagesc(ones(size(base2)),[-M,M]);
         axis('off');

@@ -10,7 +10,6 @@ function result_matrix = reconstruct_painting(data, base)
     stimuli_count = length(data);
 
     result_matrix = zeros(522,171,stimuli_count);
-    condition = zeros(522,171,stimuli_count);
     
     for n=1:stimuli_count % loop over the pictures
         mouse_location_count=length(data(n).paint(:,2)); % number of mouse locations

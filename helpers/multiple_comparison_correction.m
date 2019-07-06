@@ -14,6 +14,5 @@ P = 1-cdf('T',data,df);  % p values
 t_thres = icdf('T',1-pID,df);      % T threshold, indep or pos. correl.
 t_thres_no_assump = icdf('T',1-pN,df) ;      % T threshold, no correl. assumptions
 
-
 end
 

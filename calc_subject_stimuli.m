@@ -34,7 +34,7 @@ for s=1:length(subjects) % loop over the subjects
     %% Data loading
     data=load_subj([basepath '/' subjects(s).name],2);
     
-    [resmat, condition] = reconstruct_painting(data, base);
+    resmat = reconstruct_painting(data, base);
     
     % Zusammenführen der Bilddaten zu demselben Label
     reize(:,:,1) = resmat(:,:,10) + resmat(:,:,18) + resmat(:,:,20) + resmat(:,:,22); % neutral
@@ -79,13 +79,7 @@ for s=1:length(subjects) % loop over the subjects
     
 end
 
-%visualize total data
-reize(:,:,1) = condition(:,:,10) + condition(:,:,18) + condition(:,:,20) + condition(:,:,22); % neutral
-reize(:,:,2) = condition(:,:,2) + condition(:,:,6) + condition(:,:,19) + condition(:,:,23); %anger
-reize(:,:,3) = condition(:,:,3) + condition(:,:,5) + condition(:,:,12) + condition(:,:,24); %disgust
-reize(:,:,4) = condition(:,:,4) + condition(:,:,7) + condition(:,:,13) + condition(:,:,17); % happy
-reize(:,:,5) = condition(:,:,8) + condition(:,:,15) + condition(:,:,19) + condition(:,:,25); %sadness
-reize(:,:,6) = condition(:,:,9) + condition(:,:,11) + condition(:,:,14) + condition(:,:,16); %fear
+
 
 %visualize_total(reize, base2);
 

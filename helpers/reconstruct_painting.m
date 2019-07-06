@@ -1,4 +1,4 @@
-function [result_matrix, condition] = reconstruct_painting(data, base)
+function result_matrix = reconstruct_painting(data, base)
 %RECONSTRUCT_PAINTING 
 % Input: 1xN struct with 4 fields: mouse, paint, mousedown, mouseup which
 % is created by load_subj from raw csv data which contains all mouse
@@ -37,9 +37,6 @@ function [result_matrix, condition] = reconstruct_painting(data, base)
         % we subtract left part minus right part of painted area
         % values are hard-coded to our web layout
         result_matrix(:,:,n) = over(10:531,33:203,:)-over(10:531,696:866,:);
-        % Summenbildung der Aktivierungsmuster aus den unterschiedlichen 
-        % Probanden zu jeder Bedingung
-        condition(:,:,n) = condition(:,:,n) + result_matrix(:,:,n); 
     end
 end
 

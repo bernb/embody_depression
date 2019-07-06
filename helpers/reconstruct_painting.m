@@ -4,8 +4,8 @@ function result_matrix = reconstruct_painting(data, base)
 % is created by load_subj from raw csv data which contains all mouse
 % movements.
 %
-% Output: Mouse locations while the button was pressed (i.e. during
-% painting).
+% Output: Matrix that counts appearence of clicked pixels (given in
+% data(n).paint)
     
     stimuli_count = length(data);
 

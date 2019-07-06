@@ -1,3 +1,8 @@
+% Rewrite from embody_demo_*.m
+% Input: Directory that contains one directory per subject with one csv
+% file per image. csv files are created by the 'emBODY' program.
+% Output:
+
 function calc_subject_stimuli(basepath)
 if nargin < 1
     basepath = 'data/subjects';

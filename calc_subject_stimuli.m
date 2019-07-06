@@ -31,7 +31,7 @@ for s=1:length(subjects) % loop over the subjects
         continue;
     end
     
-    %% Data loading
+    % Data loading
     data=load_subj([basepath '/' subjects(s).name],2);
     
     resmat = reconstruct_painting(data, base);
@@ -46,30 +46,13 @@ for s=1:length(subjects) % loop over the subjects
     reize(:,:,7)= resmat(:,:,1); %ground state
     
     % Speichern in .csv-Datei
-    for condition = 1:7
-        filename = sprintf('output/stimuli_files/aktivierung_exp.%d.csv', condition);
+    for c = 1:7
+        filename = sprintf('output/stimuli_files/aktivierung_exp.%d.csv', condit);
         if ~isfile(filename)
             fclose(fopen(filename,'w'));
         end
-        csvwrite(sprintf('output/stimuli_files/aktivierung_exp.%d.csv', condition),reize(:,:,condition));
+        csvwrite(sprintf('output/stimuli_files/aktivierung_exp.%d.csv', condit),reize(:,:,condit));
     end
-    
-    % initialize matrices for mean values (per emotion and patient)
-    mw_gesamt = zeros(length(subjects), 7);
-    mw_beine = zeros(length(subjects), 7);
-    mw_arme = zeros(length(subjects), 7);
-    mw_kopf = zeros(length(subjects), 7);
-    mw_rumpf = zeros(length(subjects), 7);
-
-    [... 
-        mw_gesamt(s,:), ...
-        mw_beine(s,:), ...
-        mw_arme(s,:), ...
-        mw_kopf(s,:), ...
-        mw_rumpf(s,:) ...
-     ] ...
-     = calc_mean_activation(reize, mask);
-    
     
     % store result
     save(['output/stimuli_files/' subjects(s).name '_preprocessed.mat'],'resmat')

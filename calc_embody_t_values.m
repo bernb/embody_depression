@@ -44,10 +44,7 @@ for stimuli = 1:stimuli_count
    t_data_single(:, stimuli) = stats.tstat;
 end
 
-
-
-
-
+plot_t_maps(t_data, t_data_single);
 
 
 

@@ -44,7 +44,28 @@ for stimuli = 1:stimuli_count
    t_data_single(:, stimuli) = stats.tstat;
 end
 
-plot_t_maps(t_data, t_data_single);
+% reshaping the tvalues into images
+tvals_for_plot=zeros(size(mask,1),size(mask,2),NC);
+for condit=1:NC
+    temp=zeros(size(mask));
+    temp(in_mask)=tdata(:,condit);
+    temp(~isfinite(temp))=0; % we set nans and infs to 0 for display
+    max(temp(:))
+    tvals_for_plot(:,:,condit)=temp;
+    csvwrite(sprintf('results/tvals_exp_tine.%d.csv', condit),temp);
+end
+
+tvals_for_plot_einzel=zeros(size(mask,1),size(mask,2),NP);
+for condit=1:NP
+    temp=zeros(size(mask));
+    temp(in_mask)=tdata_einzel(:,condit);
+    temp(~isfinite(temp))=0; % we set nans and infs to 0 for display
+    max(temp(:))
+    tvals_for_plot_einzel(:,:,condit)=temp;
+    csvwrite(sprintf('results/tvals_exp_tine_alle_stimuli.%d.csv', condit),temp);
+end
+
+plot_t_maps(tvals_for_plot, tvals_for_plot_einzel);
 
 
 

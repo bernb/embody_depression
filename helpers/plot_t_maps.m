@@ -12,27 +12,6 @@ hotcoldmap=[
     hotmap
     ];
 
-% reshaping the tvalues into images
-tvals_for_plot=zeros(size(mask,1),size(mask,2),NC);
-for condit=1:NC
-    temp=zeros(size(mask));
-    temp(in_mask)=tdata(:,condit);
-    temp(~isfinite(temp))=0; % we set nans and infs to 0 for display
-    max(temp(:))
-    tvals_for_plot(:,:,condit)=temp;
-    csvwrite(sprintf('results/tvals_exp_tine.%d.csv', condit),temp);
-end
-
-tvals_for_plot_einzel=zeros(size(mask,1),size(mask,2),NP);
-for condit=1:NP
-    temp=zeros(size(mask));
-    temp(in_mask)=tdata_einzel(:,condit);
-    temp(~isfinite(temp))=0; % we set nans and infs to 0 for display
-    max(temp(:))
-    tvals_for_plot_einzel(:,:,condit)=temp;
-    csvwrite(sprintf('results/tvals_exp_tine_alle_stimuli.%d.csv', condit),temp);
-end
-
 % plotting
 plotcols = 8; %set as desired
 plotrows = ceil((NC+1)/plotcols); % number of rows is equal to number of conditions+1 (for the colorbar)
@@ -52,7 +31,7 @@ for n=1:NC
     axis('off');
     set(gcf,'Color',[1 1 1]);
     hold on;
-    over2=tvals_for_plot(:,:,n);
+    over2=tdata(:,:,n);
     fh=imagesc(over2,[-M,M]);
     axis('off');
     axis equal
@@ -65,7 +44,7 @@ for n=1:NC
         axis('off');
         colorbar;
         % save a screenshot, useful for quality control (commented)
-         saveas(gcf,'results_stat_alexa/ttest_exp_tine.png');
+         saveas(gcf,'images/ttest_exp_tine.png');
     end
 end
 
@@ -79,7 +58,7 @@ for n=1:NP
     axis('off');
     set(gcf,'Color',[1 1 1]);
     hold on;
-    over2=tvals_for_plot_einzel(:,:,n);
+    over2=tdata_einzel(:,:,n);
     fh=imagesc(over2,[-M,M]);
     axis('off');
     axis equal
@@ -92,7 +71,7 @@ for n=1:NP
         axis('off');
         colorbar;
         % save a screenshot, useful for quality control (commented)
-         saveas(gcf,'results_stat_alexa/ttest_exp_tine_einzelstimuli.png')
+         saveas(gcf,'images/ttest_exp_tine_einzelstimuli.png')
     end
 end
 end

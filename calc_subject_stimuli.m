@@ -46,7 +46,7 @@ for s=1:length(subjects) % loop over the subjects
     reize(:,:,7)= resmat(:,:,1); %ground state
     
     % Speichern in .csv-Datei
-    for c = 1:7
+    for condit = 1:7
         filename = sprintf('output/stimuli_files/aktivierung_exp.%d.csv', condit);
         if ~isfile(filename)
             fclose(fopen(filename,'w'));

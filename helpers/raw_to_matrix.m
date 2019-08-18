@@ -1,4 +1,4 @@
-function [left_side, right_side] = raw_to_matrix(data)
+function [left_side, right_side] = raw_to_matrix(data, is_raw)
 % Input: 1xN struct with 4 fields: mouse, paint, mousedown, mouseup which
 % is created by load_subj from raw csv data which contains all mouse
 % movements.
@@ -15,18 +15,20 @@ function [left_side, right_side] = raw_to_matrix(data)
     % and count appearence in what will later be result_matrix
     for i=1:mouse_location_count
         % ToDo: Is ceil really neccessary? Seems to be integer anyway
-        x=ceil(data(n).paint(i,2)+1);
-        y=ceil(data(n).paint(i,3)+1);
+        x=ceil(data.paint(i,2)+1);
+        y=ceil(data.paint(i,3)+1);
         if(x<=0) x=1; end %#ok<*SEPEX>
         if(y<=0) y=1; end
         if(x>=900) x=900; end % hardcoded for our experiment, you need to change it if you changed layout
         if(y>=600) y=600; end % hardcoded for our experiment, you need to change it if you changed layout
         over(y,x)=over(y,x)+1;
     end
-    % Simulate brush size with a gaussian disk
-    % Note that the painting tool itself has a brush size
-    h=fspecial('gaussian',[15 15],5);
-    over=imfilter(over,h);
+    if nargin == 1 || is_raw == false
+        % Simulate brush size with a gaussian disk
+        % Note that the painting tool itself has a brush size
+        h=fspecial('gaussian',[15 15],5);
+        over=imfilter(over,h);
+    end
     % we subtract left part minus right part of painted area
     % values are hard-coded to our web layout
     left_side = over(10:531,33:203,:);

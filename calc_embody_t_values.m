@@ -4,6 +4,7 @@ if nargin < 1
     basepath = './output/stimuli_files/';
 end
 
+% Prepare needed variables
 mask=imread('images/mask.png');
 in_mask=find(mask>128); % list of pixels inside the mask
 mask_pixel_count = length(in_mask);

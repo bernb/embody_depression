@@ -1,4 +1,4 @@
-function [left_side, right_side] = raw_to_matrix(data, is_raw)
+function [left_side, right_side] = raw_to_matrix(data, no_filter)
 % Input: 1xN struct with 4 fields: mouse, paint, mousedown, mouseup which
 % is created by load_subj from raw csv data which contains all mouse
 % movements.
@@ -23,7 +23,7 @@ function [left_side, right_side] = raw_to_matrix(data, is_raw)
         if(y>=600) y=600; end % hardcoded for our experiment, you need to change it if you changed layout
         over(y,x)=over(y,x)+1;
     end
-    if nargin == 1 || is_raw == false
+    if nargin == 1 || no_filter == false
         % Simulate brush size with a gaussian disk
         % Note that the painting tool itself has a brush size
         h=fspecial('gaussian',[15 15],5);

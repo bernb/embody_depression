@@ -33,14 +33,20 @@ for s=1:length(subjects) % loop over the subjects
     
     resmat = reconstruct_painting(data);
     
-    % Zusammenführen der Bilddaten zu demselben Label
-    reize(:,:,1) = resmat(:,:,10) + resmat(:,:,18) + resmat(:,:,20) + resmat(:,:,22); % neutral
-    reize(:,:,2) = resmat(:,:,2) + resmat(:,:,6) + resmat(:,:,21) + resmat(:,:,23); %anger
-    reize(:,:,3)= resmat(:,:,3) + resmat(:,:,5) + resmat(:,:,12) + resmat(:,:,24); %disgust
-    reize(:,:,4)= resmat(:,:,4) + resmat(:,:,7) + resmat(:,:,13) + resmat(:,:,17); % happy
-    reize(:,:,5)= resmat(:,:,8) + resmat(:,:,15) + resmat(:,:,19) + resmat(:,:,25); %sadness
-    reize(:,:,6)= resmat(:,:,9) + resmat(:,:,11) + resmat(:,:,14) + resmat(:,:,16); %fear
-    reize(:,:,7)= resmat(:,:,1); %ground state
+    % Calc average per emotion
+    reize(:,:,1) = (resmat(:,:,10) + resmat(:,:,18) + resmat(:,:,20) + ...
+                    resmat(:,:,22)) / 4; % neutral
+    reize(:,:,2) = (resmat(:,:,2) + resmat(:,:,6) + resmat(:,:,21) + ...
+                    resmat(:,:,23)) / 4; %anger
+    reize(:,:,3) = (resmat(:,:,3) + resmat(:,:,5) + resmat(:,:,12) + ...
+                    resmat(:,:,24)) / 4; %disgust
+    reize(:,:,4) = (resmat(:,:,4) + resmat(:,:,7) + resmat(:,:,13) + ...
+                    resmat(:,:,17)) / 4; % happy
+    reize(:,:,5) = (resmat(:,:,8) + resmat(:,:,15) + resmat(:,:,19) + ...
+                    resmat(:,:,25)) / 4; %sadness
+    reize(:,:,6) = (resmat(:,:,9) + resmat(:,:,11) + resmat(:,:,14) + ...
+                    resmat(:,:,16)) / 4; %fear
+    reize(:,:,7) =  resmat(:,:,1); %ground state
     
     % store result
     save(['output/stimuli_files/' subjects(s).name '_preprocessed.mat'],'resmat')

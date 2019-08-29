@@ -1,29 +1,26 @@
-% Rewrite from embody_demo_*.m
-% Input: Directory that contains one directory per subject with one csv
+function preprocess_data(basepath)
+% Preprocessing of raw emBODY data. If no path is given 'data/subjects' 
+% will be used as basepath.
+% Function expects mask image at images/mask.png. Note that amount of images per emotion 
+% and ordering is hardcoded here.
+%
+% Input:
+% Directory that contains one directory per subject with one csv
 % file per image. csv files are created by the 'emBODY' program.
-% Output:
+% 
+%
+% Output: 
+% Two files per subject 'all_stimuli_XXX' and 'single_stimuli_XXX',
+% containing variables 'resmat' and 'stimumat', which are matrices
+% containing activation minus deactivation points. Note that we apply a
+% gaussian filter to the raw input data.
+% Save path: 'basepath/output/stimuli_files/'
 
-function calc_subject_stimuli(basepath)
 if nargin < 1
     basepath = 'data/subjects';
 end
 % get a list of subjects
 subjects=dir([basepath '/*']);
-
-% the base image used for painting (in our case only one sided since we
-% subtract values)
-base=uint8(imread('images/base.png'));
-base2=base(10:531,33:203,:); % single image base
-
-labels={'Neutral'
-    'Anger'
-    'Disgust'
-    'Happiness'
-    'Sadness'
-    'Fear'
-    'Ground state'};
-
-mask=imread('images/mask.png');
 
 for s=1:length(subjects) % loop over the subjects
     % skip dot and dotdot folders (if using macos or linux)
@@ -34,7 +31,7 @@ for s=1:length(subjects) % loop over the subjects
     % Data loading
     data=load_subj([basepath '/' subjects(s).name],2);
     
-    resmat = reconstruct_painting(data, base);
+    resmat = reconstruct_painting(data);
     
     % Zusammenführen der Bilddaten zu demselben Label
     reize(:,:,1) = resmat(:,:,10) + resmat(:,:,18) + resmat(:,:,20) + resmat(:,:,22); % neutral
@@ -45,28 +42,10 @@ for s=1:length(subjects) % loop over the subjects
     reize(:,:,6)= resmat(:,:,9) + resmat(:,:,11) + resmat(:,:,14) + resmat(:,:,16); %fear
     reize(:,:,7)= resmat(:,:,1); %ground state
     
-    % Speichern in .csv-Datei
-    for condit = 1:7
-        filename = sprintf('output/stimuli_files/aktivierung_exp.%d.csv', condit);
-        if ~isfile(filename)
-            fclose(fopen(filename,'w'));
-        end
-        csvwrite(sprintf('output/stimuli_files/aktivierung_exp.%d.csv', condit),reize(:,:,condit));
-    end
-    
     % store result
     save(['output/stimuli_files/' subjects(s).name '_preprocessed.mat'],'resmat')
     save(['output/stimuli_files/' subjects(s).name '_reize.mat'],'reize')
     
-    visualize_subject(reize, base2, mask, labels, s);
-    
+end
 end
 
-
-
-%visualize_total(reize, base2);
-
-% store result (commented)
-save('output/stimuli_files/total/total_reize.mat','reize');
-
-end

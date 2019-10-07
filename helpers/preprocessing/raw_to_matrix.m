@@ -24,6 +24,10 @@ function [left_side, right_side] = raw_to_matrix(data, no_filter)
         over(y,x)=over(y,x)+1;
     end
     if nargin == 1 || no_filter == false
+        % Inflate pixels
+        SE = strel('disk', 15, 6);
+        over = imdilate(over, SE);
+        
         % Simulate brush size with a gaussian disk
         % Note that the painting tool itself has a brush size
         h=fspecial('gaussian',[15 15],5);

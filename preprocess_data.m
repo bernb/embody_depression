@@ -1,4 +1,4 @@
-function preprocess_data(basepath)
+function [activation_data, averaged_data] = preprocess_data(basepath)
 % Preprocessing of raw emBODY data. If no path is given 'data/subjects' 
 % will be used as basepath.
 % Function expects mask image at images/mask.png. Note that amount of images per emotion 
@@ -8,13 +8,19 @@ function preprocess_data(basepath)
 % Directory that contains one directory per subject with one csv
 % file per image. csv files are created by the 'emBODY' program.
 % 
-%
 % Output: 
-% Two files per subject 'all_stimuli_XXX' and 'single_stimuli_XXX',
-% containing variables 'resmat' and 'stimumat', which are matrices
-% containing activation minus deactivation points. Note that we apply a
-% gaussian filter to the raw input data.
-% Save path: 'basepath/output/stimuli_files/'
+% activation_data: (nxmxkxs)-Matrix
+%   s: subject count
+%   k: stimuli count
+%   n,m: coordinates of clicked pixels
+%
+% averaged_data: (nxmxjxs)-Matrix
+%   n,m,s: as above
+%   j: emotion count
+%
+% Notes:
+% * deactivation is subtracted from activation
+% * A gauss-filter is applied to inflate the actual clicked points
 
 if nargin < 1
     basepath = 'data/subjects';
@@ -49,9 +55,16 @@ for s=1:length(subjects) % loop over the subjects
     reize(:,:,7) =  resmat(:,:,1); %ground state
     
     % store result
-    save(['output/stimuli_files/' subjects(s).name '_preprocessed.mat'],'resmat')
-    save(['output/stimuli_files/' subjects(s).name '_reize.mat'],'reize')
+    writematrix(resmat, ['output/stimuli_files/' subjects(s).name '_clickcount.csv']);
+    writematrix(reize, ['output/stimuli_files/' subjects(s).name '_averaged.csv']);
     
+    activation_data(:,:,:,s) = resmat;
+    averaged_data(:,:,:,s) = reize;
+       
 end
+
+save('output/activation_data.mat', 'activation_data')
+save('output/averaged_data.mat', 'averaged_data')
+    
 end
 

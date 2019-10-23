@@ -35,9 +35,9 @@ for s=1:length(subjects) % loop over the subjects
     end
     
     % Data loading
-    data=load_subj([basepath '/' subjects(s).name],2);
+    data=helpers.preprocessing.load_subj([basepath '/' subjects(s).name],2);
     
-    resmat = reconstruct_painting(data);
+    resmat = helpers.preprocessing.reconstruct_painting(data);
     
     % Calc average per emotion
     reize(:,:,1) = (resmat(:,:,10) + resmat(:,:,18) + resmat(:,:,20) + ...
@@ -53,18 +53,11 @@ for s=1:length(subjects) % loop over the subjects
     reize(:,:,6) = (resmat(:,:,9) + resmat(:,:,11) + resmat(:,:,14) + ...
                     resmat(:,:,16)) / 4; %fear
     reize(:,:,7) =  resmat(:,:,1); %ground state
-    
-    % store result
-    writematrix(resmat, ['output/stimuli_files/' subjects(s).name '_clickcount.csv']);
-    writematrix(reize, ['output/stimuli_files/' subjects(s).name '_averaged.csv']);
-    
+
     activation_data(:,:,:,s) = resmat;
     averaged_data(:,:,:,s) = reize;
        
 end
 
-save('output/activation_data.mat', 'activation_data')
-save('output/averaged_data.mat', 'averaged_data')
-    
 end
 

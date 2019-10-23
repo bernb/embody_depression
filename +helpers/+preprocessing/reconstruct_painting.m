@@ -12,7 +12,7 @@ function result_matrix = reconstruct_painting(data)
     result_matrix = zeros(522,171,stimuli_count);
     
     for n=1:stimuli_count % loop over the pictures
-        [left_side, right_side] = raw_to_matrix(data(n));
+        [left_side, right_side] = helpers.preprocessing.raw_to_matrix(data(n));
         result_matrix(:,:,n) = left_side - right_side;
     end
 end

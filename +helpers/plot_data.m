@@ -7,7 +7,7 @@ end
 
 mask=imread('images/mask.png');
 
-M=0.2;%M=max(abs(resmat(:))); % max range for colorbar
+M=0.2; %M=max(abs(resmat(:))); % max range for colorbar
 NumCol = 64;
 hotmap = hot(NumCol);
 coldmap = flipud([hotmap(:,3) hotmap(:,2) hotmap(:,1) ]);

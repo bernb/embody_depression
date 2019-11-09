@@ -5,6 +5,7 @@ function figure_handle = data(data, labels, threshold)
 %   (nxmxj) Matrix
 %       n, m: pixel coordinates
 %       j: plot count
+% ToDo: Plots scheinen teilweise oben am Kopf ein wenigabgeschnitten zu sein
 
 figure_handle = figure;
 plot_count = size(data, 3);

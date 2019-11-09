@@ -25,15 +25,12 @@ function [activation_data, averaged_data] = preprocess_data(basepath)
 if nargin < 1
     basepath = 'data/subjects';
 end
+
 % get a list of subjects
-subjects=dir([basepath '/*']);
+subjects = helpers.dir(basepath);
 
 for s=1:length(subjects) % loop over the subjects
-    % skip dot and dotdot folders (if using macos or linux)
-    if(strcmp(subjects(s).name(1),'.'))
-        continue;
-    end
-    
+
     % Data loading
     data=helpers.preprocessing.load_subj([basepath '/' subjects(s).name],2);
     

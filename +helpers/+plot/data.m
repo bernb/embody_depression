@@ -9,6 +9,10 @@ function figure_handle = data(data, labels, threshold)
 figure_handle = figure;
 plot_count = size(data, 3);
 
+if length(labels) ~= plot_count
+   warning('Label count not consistent with plot count. Skipping labels.'); 
+end
+
 if nargin < 2 || length(labels) ~= plot_count
     use_labels = false;
 else

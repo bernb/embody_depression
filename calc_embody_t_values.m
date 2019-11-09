@@ -1,4 +1,4 @@
-function t_data = calc_embody_t_values(data)
+function [t_data, t_threshold] = calc_embody_t_values(data)
 % Calculates t-values per pixel and applies FDR
 %
 % Input:
@@ -22,26 +22,23 @@ pixel_count = n*m;
 
 subject_count = size(data, 4);
 stimuli_count = size(data, 3);
-t_data = zeros(pixel_count, stimuli_count);
+t_data = zeros(n, m, stimuli_count);
 
 for stimuli = 1:stimuli_count
     % First extract all data for a single stimuli
     % Then reshape into (subject_count, pixel_count) matrix
     stimuli_data = squeeze(data(:,:,stimuli,:));
-    stimuli_data = reshape(stimuli_data,[],pixel_count);
+    stimuli_data = reshape(stimuli_data, [], 30)';
     
     % ttest does one test per column, thus making
-    % pixel_count ttests in total
+    % n*m ttests in total
     [~, ~, ~, STATS] = ttest(stimuli_data);
-    t_data(:, stimuli_count) = squeeze(STATS.tstat);
+    result = squeeze(STATS.tstat)';
+    t_data(:, :, stimuli) = reshape(result, n, m);
 end
 
 % Apply FDR
-t_threshold = helpers.multiple_comparison_correction(t_data(:), subject_count);
-
-% Apply threshold to data
-t_data(abs(t_data) < t_threshold) = 0;
-t_data = reshape(t_data, n, m, stimuli_count);
+t_threshold = helpers.multiple_comparison_correction(t_data(isfinite(t_data)), subject_count);
 
 
 

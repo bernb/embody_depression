@@ -38,7 +38,7 @@ for stimuli = 1:stimuli_count
 end
 
 % Apply FDR
-t_threshold = helpers.multiple_comparison_correction(t_data(isfinite(t_data)), subject_count);
+t_threshold = helpers.multiple_comparison_correction(t_data, subject_count);
 
 
 

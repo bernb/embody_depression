@@ -5,7 +5,6 @@ function t_thres = multiple_comparison_correction(data, subject_count)
 % correlation
 % t_thres_no_assump: t threshold for no assumption about correlation
 
-% ToDo: Is this really needed? We do not work with 'demo subjects'
 data(~isfinite(data)) = [];   % getting rid of anomalies due to low number of demo subjects (ie no variance)
 
 df=subject_count-1;    % degrees of freedom

@@ -1,4 +1,6 @@
-function figure_handle = data(data)
+function figure_handle = data(data, threshold)
+%DATA plot a row of figures. Values within [-threshold, threshold] will
+%appear black.
 % Input:
 %   (nxmxj) Matrix
 %       n, m: pixel coordinates

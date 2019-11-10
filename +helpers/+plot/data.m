@@ -1,4 +1,4 @@
-function figure_handle = data(data, labels, threshold)
+function figure_handle = data(data, labels, threshold, plot_title)
 %DATA plot a row of figures. Values within [-threshold, threshold] will
 %appear black.
 % Input:
@@ -9,6 +9,12 @@ function figure_handle = data(data, labels, threshold)
 
 figure_handle = figure;
 plot_count = size(data, 3);
+
+if nargin < 4
+    plot_title = '';
+end
+
+figure_handle.Name = plot_title;
 
 if length(labels) ~= plot_count
    warning('Label count not consistent with plot count. Skipping labels.'); 
@@ -37,6 +43,7 @@ else
     color_map = helpers.plot.color_map(data_max, threshold, num_colors);
     sgtitle(['threshold: ', num2str(threshold)]);
 end
+    
 
 for n = 1:plot_count
    % We leave one empty to attach colorbar after the loop

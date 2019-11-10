@@ -29,6 +29,10 @@ end
 % get a list of subjects
 subjects = helpers.dir(basepath);
 
+if isempty(subjects)
+    warning('Could not find any subjects in given directory');
+end
+
 for s=1:length(subjects) % loop over the subjects
 
     % Data loading

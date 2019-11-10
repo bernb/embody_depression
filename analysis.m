@@ -1,4 +1,12 @@
-cg_path = '/data/subjects/CG';
+% ToDo:
+% raw_to_matrix ohne inflating der pixel:
+% maske hat falsche ecken bei z.B. MDDm
+
+% ToDo:
+% Differenzen auf Fehler checken: nm - m
+% Sieht aus wie inverse von m
+
+cg_path = './data/subjects/CG';
 m_path = './data/subjects/MDDm';
 nm_path = './data/subjects/MDDnm';
 emotion_labels = [...
@@ -11,25 +19,29 @@ emotion_labels = [...
     "ground state"
     ];
 
-[~, cg_data] = preprocess_data(cg_path);
-[t_data, t_threshold] = calc_embody_t_values(cg_data);
-helpers.plot.data(t_data, emotion_labels, t_threshold);
+if ~exist('cg_data', 'var') || exist('rebuild_data', 'var')
+    [~, cg_data] = preprocess_data(cg_path);
+    [cg_t_data, cg_t_threshold] = calc_embody_t_values(cg_data);
+end
 
-[~, m_data] = preprocess_data(m_path);
-[t_data, t_threshold] = calc_embody_t_values(m_data);
-helpers.plot.data(t_data, emotion_labels, t_threshold);
+if ~exist('m_data', 'var') || exist('rebuild_data', 'var')
+    [~, m_data] = preprocess_data(m_path);
+    [m_t_data, m_t_threshold] = calc_embody_t_values(m_data);
+end
 
+if ~exist('nm_data', 'var') || exist('rebuild_data', 'var')
+    [~, nm_data] = preprocess_data(nm_path);
+    [nm_t_data, nm_t_threshold] = calc_embody_t_values(nm_data);
+end
 
-[~, nm_data] = preprocess_data(nm_path);
-[t_data, t_threshold] = calc_embody_t_values(nm_data);
-helpers.plot.data(t_data, emotion_labels, t_threshold);
+cg_m_diff = cg_t_data - m_t_data;
+cg_m_t_threshold = helpers.multiple_comparison_correction(cg_m_diff, 30);
 
+cg_nm_diff = cg_t_data - nm_t_data;
+cg_nm_t_threshold = helpers.multiple_comparison_correction(cg_nm_diff, 30);
 
+nm_m_diff = nm_data - m_t_data;
+nm_m_t_threshold = helpers.multiple_comparison_correction(nm_m_diff, 30);
 
-% cg_m_diff = cg_data - m_data;
-% [t_data, t_threshold] = calc_embody_t_values(cg_m_diff);
-% 
-% cg_nm_diff = cg_data - nm_data;
-% nm_m_diff = nm_data - m_data;
-% m_nm_diff = m_data - nm_data;
-
+m_nm_diff = m_t_data - nm_t_data;
+m_nm_t_threshold = helpers.multiple_comparison_correction(m_nm_diff, 30);

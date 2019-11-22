@@ -19,19 +19,25 @@ emotion_labels = [...
     "ground state"
     ];
 
-if ~exist('cg_data', 'var') || exist('rebuild_data', 'var')
-    [~, cg_data] = preprocess_data(cg_path);
-    [cg_t_data, cg_t_threshold] = calc_embody_t_values(cg_data);
+if ~exist('cg_data', 'var') || ...
+   ~exist('cg_data_averaged', 'var') || ...
+    exist('rebuild_data', 'var')
+    [cg_data, cg_data_averaged] = preprocess_data(cg_path);
+    [cg_t_data, cg_t_threshold] = calc_embody_t_values(cg_data_averaged);
 end
 
-if ~exist('m_data', 'var') || exist('rebuild_data', 'var')
-    [~, m_data] = preprocess_data(m_path);
-    [m_t_data, m_t_threshold] = calc_embody_t_values(m_data);
+if ~exist('m_data', 'var') || ...
+   ~exist('m_data_averaged', 'var') || ...
+    exist('rebuild_data', 'var')
+    [cg_data, m_data_averaged] = preprocess_data(m_path);
+    [m_t_data, m_t_threshold] = calc_embody_t_values(m_data_averaged);
 end
 
-if ~exist('nm_data', 'var') || exist('rebuild_data', 'var')
-    [~, nm_data] = preprocess_data(nm_path);
-    [nm_t_data, nm_t_threshold] = calc_embody_t_values(nm_data);
+if ~exist('nm_data', 'var') || ...
+   ~exist('nm_data_averaged', 'var') || ...
+    exist('rebuild_data', 'var')
+    [cg_data, nm_data_averaged] = preprocess_data(nm_path);
+    [nm_t_data, nm_t_threshold] = calc_embody_t_values(nm_data_averaged);
 end
 
 cg_m_diff = cg_t_data - m_t_data;
@@ -40,7 +46,7 @@ cg_m_t_threshold = helpers.multiple_comparison_correction(cg_m_diff, 30);
 cg_nm_diff = cg_t_data - nm_t_data;
 cg_nm_t_threshold = helpers.multiple_comparison_correction(cg_nm_diff, 30);
 
-nm_m_diff = nm_data - m_t_data;
+nm_m_diff = nm_data_averaged - m_t_data;
 nm_m_t_threshold = helpers.multiple_comparison_correction(nm_m_diff, 30);
 
 m_nm_diff = m_t_data - nm_t_data;

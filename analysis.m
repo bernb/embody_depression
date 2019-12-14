@@ -79,9 +79,8 @@ nm_m_t_threshold = helpers.multiple_comparison_correction(nm_m_diff, 30);
 m_nm_diff = m_t_data - nm_t_data;
 m_nm_t_threshold = helpers.multiple_comparison_correction(m_nm_diff, 30);
 
-
+disp('Calculate mean and SD accuracy for CG');
+trials = 100;
 % Remove ground state
 cg_cleaned = cg_data(:,:,2:end,:);
-
-% confusion_table can be plotted with imagesc or confusionchart
-[confusion_table, accuracy] = helpers.calc_model(cg_data(:,:,2:end,:), stimuli);
+[cg_accuracies, cg_avg_confusion_table] = helpers.calc_averaged_model_data(cg_cleaned, stimuli, trials);

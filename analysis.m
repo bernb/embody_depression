@@ -19,6 +19,33 @@ emotion_labels = [...
     "ground state"
     ];
 
+stimuli = [...
+    emotion_labels(2)
+    emotion_labels(3)
+    emotion_labels(4)
+    emotion_labels(3)
+    emotion_labels(2)
+    emotion_labels(4)
+    emotion_labels(5)
+    emotion_labels(6)
+    emotion_labels(1)
+    emotion_labels(6)
+    emotion_labels(3)
+    emotion_labels(4)
+    emotion_labels(6)
+    emotion_labels(5)
+    emotion_labels(6)
+    emotion_labels(4)
+    emotion_labels(1)
+    emotion_labels(5)
+    emotion_labels(1)
+    emotion_labels(2)
+    emotion_labels(1)
+    emotion_labels(2)
+    emotion_labels(3)
+    emotion_labels(5)
+    ];
+
 if ~exist('cg_data', 'var') || ...
    ~exist('cg_data_averaged', 'var') || ...
     exist('rebuild_data', 'var')
@@ -29,14 +56,14 @@ end
 if ~exist('m_data', 'var') || ...
    ~exist('m_data_averaged', 'var') || ...
     exist('rebuild_data', 'var')
-    [cg_data, m_data_averaged] = preprocess_data(m_path);
+    [m_data, m_data_averaged] = preprocess_data(m_path);
     [m_t_data, m_t_threshold] = calc_embody_t_values(m_data_averaged);
 end
 
 if ~exist('nm_data', 'var') || ...
    ~exist('nm_data_averaged', 'var') || ...
     exist('rebuild_data', 'var')
-    [cg_data, nm_data_averaged] = preprocess_data(nm_path);
+    [nm_data, nm_data_averaged] = preprocess_data(nm_path);
     [nm_t_data, nm_t_threshold] = calc_embody_t_values(nm_data_averaged);
 end
 
@@ -51,3 +78,9 @@ nm_m_t_threshold = helpers.multiple_comparison_correction(nm_m_diff, 30);
 
 m_nm_diff = m_t_data - nm_t_data;
 m_nm_t_threshold = helpers.multiple_comparison_correction(m_nm_diff, 30);
+
+
+% Remove ground state
+cg_cleaned = cg_data(:,:,2:end,:);
+
+[cv_model, accuracy] = helpers.calc_model(cg_data(:,:,2:end,:), stimuli);

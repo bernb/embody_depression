@@ -1,4 +1,4 @@
-function [cv_model,accuracy] = calc_model(data, stimuli)
+function [confusion_table,accuracy] = calc_model(data, stimuli)
 
 subject_count = size(data, 4);
 
@@ -21,5 +21,10 @@ cv_model = crossval(lda_model, 'KFold', 5);
 
 correct_predictions = length(find(label == responses));
 accuracy = correct_predictions / length(label);
+
+[confusion_matrix, order] = confusionmat(label, responses);
+confusion_table = array2table(confusion_matrix, ...
+    'RowNames', order, ...
+    'VariableNames', order);
 end
 

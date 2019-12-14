@@ -83,4 +83,5 @@ m_nm_t_threshold = helpers.multiple_comparison_correction(m_nm_diff, 30);
 % Remove ground state
 cg_cleaned = cg_data(:,:,2:end,:);
 
-[cv_model, accuracy] = helpers.calc_model(cg_data(:,:,2:end,:), stimuli);
+% Run 100 times and calculate mean and standard deviation
+[confusion_table, accuracy] = helpers.calc_model(cg_data(:,:,2:end,:), stimuli);

@@ -101,3 +101,18 @@ if ~exist('m_accuracies', 'var') || ...
     m_cleaned = m_data(:,:,2:end,:);
     [m_accuracies, m_avg_confusion_table] = helpers.calc_averaged_model_data(m_cleaned, stimuli, trials);
 end
+
+emotion_order = [...
+    "neutral"
+    "anger"
+    "disgust"
+    "happy"
+    "sadness"
+    "fear"
+    "ground_state"
+    ];
+corr_table = table();
+corr_table.('cg_vs_m') = calc_spearman(cg_data_averaged, m_data_averaged);
+corr_table.('cg_vs_nm') = calc_spearman(cg_data_averaged, nm_data_averaged);
+corr_table.('nm_vs_m') = calc_spearman(nm_data_averaged, m_data_averaged);
+corr_table.Properties.RowNames = emotion_order;

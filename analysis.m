@@ -79,8 +79,25 @@ nm_m_t_threshold = helpers.multiple_comparison_correction(nm_m_diff, 30);
 m_nm_diff = m_t_data - nm_t_data;
 m_nm_t_threshold = helpers.multiple_comparison_correction(m_nm_diff, 30);
 
-disp('Calculate mean and SD accuracy for CG');
-trials = 100;
-% Remove ground state
-cg_cleaned = cg_data(:,:,2:end,:);
-[cg_accuracies, cg_avg_confusion_table] = helpers.calc_averaged_model_data(cg_cleaned, stimuli, trials);
+if ~exist('cg_accuracies', 'var') || ...
+   ~exist('cg_avg_confusion_table', 'var')
+    disp('Calculate mean and SD accuracy for CG');
+    trials = 100;
+    % Remove ground state
+    cg_cleaned = cg_data(:,:,2:end,:);
+    [cg_accuracies, cg_avg_confusion_table] = helpers.calc_averaged_model_data(cg_cleaned, stimuli, trials);
+end
+
+if ~exist('nm_accuracies', 'var') || ...
+   ~exist('nm_avg_confusion_table', 'var')
+    disp('Calculate mean and SD accuracy for nm');
+    nm_cleaned = nm_data(:,:,2:end,:);
+    [nm_accuracies, nm_avg_confusion_table] = helpers.calc_averaged_model_data(nm_cleaned, stimuli, trials);
+end
+
+if ~exist('m_accuracies', 'var') || ...
+   ~exist('m_avg_confusion_table', 'var')
+    disp('Calculate mean and SD accuracy for m');
+    m_cleaned = m_data(:,:,2:end,:);
+    [m_accuracies, m_avg_confusion_table] = helpers.calc_averaged_model_data(m_cleaned, stimuli, trials);
+end

@@ -6,6 +6,9 @@
 % Differenzen auf Fehler checken: nm - m
 % Sieht aus wie inverse von m
 
+mask = imread('images/mask.png');
+mask_indices = find(mask>128);
+
 cg_path = './data/subjects/CG';
 m_path = './data/subjects/MDDm';
 nm_path = './data/subjects/MDDnm';
@@ -112,7 +115,7 @@ emotion_order = [...
     "ground_state"
     ];
 corr_table = table();
-corr_table.('cg_vs_m') = calc_spearman(cg_data_averaged, m_data_averaged);
-corr_table.('cg_vs_nm') = calc_spearman(cg_data_averaged, nm_data_averaged);
-corr_table.('nm_vs_m') = calc_spearman(nm_data_averaged, m_data_averaged);
+corr_table.('cg_vs_m') = calc_spearman(cg_data_averaged, m_data_averaged, mask);
+corr_table.('cg_vs_nm') = calc_spearman(cg_data_averaged, nm_data_averaged, mask);
+corr_table.('nm_vs_m') = calc_spearman(nm_data_averaged, m_data_averaged, mask);
 corr_table.Properties.RowNames = emotion_order;

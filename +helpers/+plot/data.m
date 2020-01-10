@@ -16,10 +16,6 @@ end
 
 figure_handle.Name = plot_title;
 
-if length(labels) ~= plot_count
-   warning('Label count not consistent with plot count. Skipping labels.'); 
-end
-
 if nargin < 2 || length(labels) ~= plot_count
     use_labels = false;
 else

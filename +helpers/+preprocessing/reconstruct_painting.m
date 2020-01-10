@@ -1,4 +1,4 @@
-function result_matrix = reconstruct_painting(data)
+function [diff, left_side, right_side] = reconstruct_painting(data)
 %RECONSTRUCT_PAINTING 
 % Input: 1xN struct with 4 fields: mouse, paint, mousedown, mouseup which
 % is created by load_subj from raw csv data which contains all mouse
@@ -9,11 +9,15 @@ function result_matrix = reconstruct_painting(data)
     
     stimuli_count = length(data);
 
-    result_matrix = zeros(522,171,stimuli_count);
+    diff = zeros(522,171,stimuli_count);
+    left_side = zeros(522,171, stimuli_count);
+    right_side = zeros(522,171, stimuli_count);
     
     for n=1:stimuli_count % loop over the pictures
-        [left_side, right_side] = helpers.preprocessing.raw_to_matrix(data(n));
-        result_matrix(:,:,n) = left_side - right_side;
+        [l, r] = helpers.preprocessing.raw_to_matrix(data(n));
+        left_side(:,:,n) = l;
+        right_side(:,:,n) = r;
+        diff(:,:,n) = l - r;
     end
 end
 

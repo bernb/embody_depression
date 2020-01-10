@@ -52,21 +52,21 @@ stimuli = [...
 if ~exist('cg_data', 'var') || ...
    ~exist('cg_data_averaged', 'var') || ...
     exist('rebuild_data', 'var')
-    [cg_data, cg_data_averaged] = preprocess_data(cg_path);
+    [cg_data, cg_data_averaged, cg_avg_left, cg_avg_right] = preprocess_data(cg_path);
     [cg_t_data, cg_t_threshold] = calc_embody_t_values(cg_data_averaged);
 end
 
 if ~exist('m_data', 'var') || ...
    ~exist('m_data_averaged', 'var') || ...
     exist('rebuild_data', 'var')
-    [m_data, m_data_averaged] = preprocess_data(m_path);
+    [m_data, m_data_averaged, m_avg_left, m_avg_right] = preprocess_data(m_path);
     [m_t_data, m_t_threshold] = calc_embody_t_values(m_data_averaged);
 end
 
 if ~exist('nm_data', 'var') || ...
    ~exist('nm_data_averaged', 'var') || ...
     exist('rebuild_data', 'var')
-    [nm_data, nm_data_averaged] = preprocess_data(nm_path);
+    [nm_data, nm_data_averaged, nm_avg_left, nm_avg_right] = preprocess_data(nm_path);
     [nm_t_data, nm_t_threshold] = calc_embody_t_values(nm_data_averaged);
 end
 

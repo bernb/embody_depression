@@ -1,4 +1,4 @@
-function figure_handle = data(data, labels, threshold, plot_title)
+function figure_handle = data(data, labels, threshold, plot_title, flip_colors)
 %DATA plot a row of figures. Values within [-threshold, threshold] will
 %appear black.
 % Input:
@@ -9,6 +9,10 @@ function figure_handle = data(data, labels, threshold, plot_title)
 
 figure_handle = figure;
 plot_count = size(data, 3);
+
+if nargin < 5
+    flip_colors = false;
+end
 
 if nargin < 4
     plot_title = '';
@@ -38,6 +42,10 @@ if nargin < 3
 else
     color_map = helpers.plot.color_map(data_max, threshold, num_colors);
     sgtitle(['threshold: ', num2str(threshold)]);
+end
+
+if flip_colors
+    color_map = flipud(color_map);
 end
     
 

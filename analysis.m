@@ -76,7 +76,7 @@ cg_m_t_threshold = helpers.multiple_comparison_correction(cg_m_diff, 30);
 cg_nm_diff = cg_t_data - nm_t_data;
 cg_nm_t_threshold = helpers.multiple_comparison_correction(cg_nm_diff, 30);
 
-nm_m_diff = nm_data_averaged - m_t_data;
+nm_m_diff = nm_t_data - m_t_data;
 nm_m_t_threshold = helpers.multiple_comparison_correction(nm_m_diff, 30);
 
 m_nm_diff = m_t_data - nm_t_data;
@@ -119,3 +119,50 @@ corr_table.('cg_vs_m') = calc_spearman(cg_data_averaged, m_data_averaged, mask);
 corr_table.('cg_vs_nm') = calc_spearman(cg_data_averaged, nm_data_averaged, mask);
 corr_table.('nm_vs_m') = calc_spearman(nm_data_averaged, m_data_averaged, mask);
 corr_table.Properties.RowNames = emotion_order;
+
+% Gather some basic statistical facts about t-values
+max(cg_t_data, [], 'all');
+min(cg_t_data, [], 'all');
+
+max(nm_t_data, [], 'all');
+min(nm_t_data, [], 'all');
+
+max(m_t_data, [], 'all');
+min(m_t_data, [], 'all');
+
+for i = 1:size(cg_t_data,3)
+    data = cg_t_data(:,:,i);
+    m = median(data(~isnan(data)), 'all');
+    pixels_over_threshold_count = ...
+        length(data(data > cg_t_threshold | data < -cg_t_threshold));
+    disp(['Emotion No. ', num2str(i), ':']);
+    disp(['median: ', num2str(m)]);
+    disp(['Amount of pixels larger/smaller than +/- FDR Threshold: ', ... 
+        num2str(pixels_over_threshold_count)]);
+    disp(' ');
+end
+    
+
+for i = 1:size(m_t_data,3)
+    data = m_t_data(:,:,i);
+    m = median(data(~isnan(data)), 'all');
+    pixels_over_threshold_count = ...
+        length(data(data > m_t_threshold | data < -m_t_threshold));
+    disp(['Emotion No. ', num2str(i), ':']);
+    disp(['median: ', num2str(m)]);
+    disp(['Amount of pixels larger/smaller than +/- FDR Threshold: ', ... 
+        num2str(pixels_over_threshold_count)]);
+    disp(' ');
+end
+
+for i = 1:size(nm_t_data,3)
+    data = nm_t_data(:,:,i);
+    m = median(data(~isnan(data)), 'all');
+    pixels_over_threshold_count = ...
+        length(data(data > nm_t_threshold | data < -nm_t_threshold));
+    disp(['Emotion No. ', num2str(i), ':']);
+    disp(['median: ', num2str(m)]);
+    disp(['Amount of pixels larger/smaller than +/- FDR Threshold: ', ... 
+        num2str(pixels_over_threshold_count)]);
+    disp(' ');
+end

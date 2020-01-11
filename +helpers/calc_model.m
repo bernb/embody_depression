@@ -1,4 +1,4 @@
-function [confusion_table,accuracy, cv_model] = calc_model(data, stimuli)
+function [confusion_table,accuracy, lda_model, cv_model] = calc_model(data, stimuli)
 
 subject_count = size(data, 4);
 

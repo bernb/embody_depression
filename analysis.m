@@ -166,3 +166,28 @@ for i = 1:size(nm_t_data,3)
         num2str(pixels_over_threshold_count)]);
     disp(' ');
 end
+
+% Take a closer look at left and right sides
+cg_avg_left = mean(cg_avg_left, 4);
+cg_avg_right = mean(cg_avg_right, 4);
+cg_left_sum = sum(cg_avg_left, 'all');
+cg_right_sum = sum(cg_avg_right, 'all');
+cg_right_left_sum = cg_right_sum + cg_left_sum;
+cg_right_part = cg_right_sum / cg_right_left_sum;
+cg_left_part = cg_left_sum / cg_right_left_sum;
+
+m_avg_left = mean(m_avg_left, 4);
+m_avg_right = mean(m_avg_right, 4);
+m_left_sum = sum(m_avg_left, 'all');
+m_right_sum = sum(m_avg_right, 'all');
+m_right_left_sum = m_right_sum + m_left_sum;
+m_right_part = m_right_sum / m_right_left_sum;
+m_left_part = m_left_sum / m_right_left_sum;
+
+nm_avg_left = mean(nm_avg_left, 4);
+nm_avg_right = mean(nm_avg_right, 4);
+nm_left_sum = sum(nm_avg_left, 'all');
+nm_right_sum = sum(nm_avg_right, 'all');
+nm_right_left_sum = nm_right_sum + nm_left_sum;
+nm_right_part = nm_right_sum / nm_right_left_sum;
+nm_left_part = nm_left_sum / nm_right_left_sum;

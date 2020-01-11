@@ -1,7 +1,8 @@
 function [accuracies, avg_confusion_table] = calc_averaged_model_data(data, stimuli, trials)
 
 accuracies = zeros(trials,1);
-cg_confusion_data = zeros(6,6);
+emotion_count = length(unique(stimuli));
+cg_confusion_data = zeros(emotion_count,emotion_count);
 for i=1:trials
     % confusion_table can be plotted with imagesc or confusionchart
     [avg_confusion_table, accuracy] = helpers.calc_model(data, stimuli);

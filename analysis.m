@@ -49,6 +49,9 @@ stimuli = [...
     emotion_labels(5)
     ];
 
+non_anger_stimuli_indices = find(stimuli ~= 'anger') + 1;
+stimuli_no_anger = stimuli(non_anger_stimuli_indices - 1);
+
 if ~exist('cg_data', 'var') || ...
    ~exist('cg_data_averaged', 'var') || ...
     exist('rebuild_data', 'var')
@@ -89,6 +92,10 @@ if ~exist('cg_accuracies', 'var') || ...
     % Remove ground state
     cg_cleaned = cg_data(:,:,2:end,:);
     [cg_accuracies, cg_avg_confusion_table] = helpers.calc_averaged_model_data(cg_cleaned, stimuli, trials);
+    
+    % Now also remove anger
+    cg_cleaned_no_anger = cg_data(:,:,non_anger_stimuli_indices,:);
+    [cg_accuracies_no_anger, cg_avg_confusion_table_no_anger] = helpers.calc_averaged_model_data(cg_cleaned_no_anger, stimuli_no_anger, trials);
 end
 
 if ~exist('nm_accuracies', 'var') || ...
@@ -96,6 +103,10 @@ if ~exist('nm_accuracies', 'var') || ...
     disp('Calculate mean and SD accuracy for nm');
     nm_cleaned = nm_data(:,:,2:end,:);
     [nm_accuracies, nm_avg_confusion_table] = helpers.calc_averaged_model_data(nm_cleaned, stimuli, trials);
+    
+    % Now also remove anger
+    nm_cleaned_no_anger = nm_data(:,:,non_anger_stimuli_indices,:);
+    [nm_accuracies_no_anger, nm_avg_confusion_table_no_anger] = helpers.calc_averaged_model_data(nm_cleaned_no_anger, stimuli_no_anger, trials);
 end
 
 if ~exist('m_accuracies', 'var') || ...
@@ -103,6 +114,10 @@ if ~exist('m_accuracies', 'var') || ...
     disp('Calculate mean and SD accuracy for m');
     m_cleaned = m_data(:,:,2:end,:);
     [m_accuracies, m_avg_confusion_table] = helpers.calc_averaged_model_data(m_cleaned, stimuli, trials);
+    
+    % Now also remove anger
+    m_cleaned_no_anger = m_data(:,:,non_anger_stimuli_indices,:);
+    [m_accuracies_no_anger, m_avg_confusion_table_no_anger] = helpers.calc_averaged_model_data(m_cleaned_no_anger, stimuli_no_anger, trials);
 end
 
 emotion_order = [...
@@ -191,3 +206,41 @@ nm_right_sum = sum(nm_avg_right, 'all');
 nm_right_left_sum = nm_right_sum + nm_left_sum;
 nm_right_part = nm_right_sum / nm_right_left_sum;
 nm_left_part = nm_left_sum / nm_right_left_sum;
+
+% Test CG LDA model against NM and M data
+% ToDo: Refactor everything into own functions
+[~, ~, lda_model, ~, loadings, score] = ...
+    helpers.calc_model(cg_cleaned, stimuli);
+% Apply same transformation as in calc_model to have obversations in rows
+% and variables in columns
+nm_transformed = reshape(nm_cleaned, 522, 171, [], 1);
+nm_transformed = reshape(nm_transformed , [], size(nm_transformed,3))';
+nm_transformed = nm_transformed*loadings;
+nm_predicted_with_cg_model = predict(lda_model, nm_transformed(:,1:30));
+subject_count = size(nm_cleaned, 4);
+responses = repmat(stimuli, subject_count, 1);
+nm_vs_cg_correct_predictions = length(find(... 
+    nm_predicted_with_cg_model == responses));
+nm_vs_cg_accuracy = nm_vs_cg_correct_predictions / length(nm_predicted_with_cg_model);
+[confusion_matrix, order] = confusionmat(responses, nm_predicted_with_cg_model);
+nm_vs_cg_confusion_table = array2table(confusion_matrix, ...
+    'RowNames', order, ...
+    'VariableNames', order);
+nm_vs_cg_confusion_table.Properties.Description = ...
+    'left: real class; top: predicted class';
+
+m_transformed = reshape(m_cleaned, 522, 171, [], 1);
+m_transformed = reshape(m_transformed , [], size(m_transformed,3))';
+m_transformed = m_transformed*loadings;
+m_predicted_with_cg_model = predict(lda_model, m_transformed(:,1:30));
+subject_count = size(m_cleaned, 4);
+responses = repmat(stimuli, subject_count, 1);
+m_vs_cg_correct_predictions = length(find(... 
+    m_predicted_with_cg_model == responses));
+m_vs_cg_accuracy = m_vs_cg_correct_predictions / length(m_predicted_with_cg_model);
+[confusion_matrix, order] = confusionmat(responses, m_predicted_with_cg_model);
+m_vs_cg_confusion_table = array2table(confusion_matrix, ...
+    'RowNames', order, ...
+    'VariableNames', order);
+m_vs_cg_confusion_table.Properties.Description = ...
+    'left: real class; top: predicted class';

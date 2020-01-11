@@ -1,4 +1,4 @@
-function [confusion_table,accuracy, lda_model, cv_model] = calc_model(data, stimuli)
+function [confusion_table,accuracy, lda_model, cv_model, pca_loadings, score] = calc_model(data, stimuli)
 
 subject_count = size(data, 4);
 
@@ -12,7 +12,7 @@ data = reshape(data, 522, 171, [], 1);
 data = reshape(data, [], size(data,3))';
 
 % score contains data rotated by loadings
-[~,score] = pca(data);
+[pca_loadings, score] = pca(data);
 
 responses = repmat(stimuli, subject_count, 1);
 lda_model = fitcdiscr(score(:,1:30), responses);

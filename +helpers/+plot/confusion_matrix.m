@@ -8,11 +8,13 @@ function image_handle = confusion_matrix(confusion_table)
 lim_max = sum(confusion_table{1,:}, 2);
 limits = [0 lim_max];
 
+chance_level = round(lim_max / height(confusion_table));
+
 % We color in white everything below chance level (lim_max / emotion_count)
 % ToDo: Don't hardcode white limit
-graymap = gray;
+graymap = gray(lim_max - chance_level);
 graymap = flipud(graymap);
-map = [ones(12,3); graymap];
+map = [ones(chance_level,3); graymap];
 
 figure;
 image_handle = imagesc(confusion_table.Variables, limits);

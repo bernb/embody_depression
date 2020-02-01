@@ -13,13 +13,13 @@ cg_path = './data/subjects/CG';
 m_path = './data/subjects/MDDm';
 nm_path = './data/subjects/MDDnm';
 emotion_labels = [...
-    "neutral"
-    "anger"
-    "disgust"
-    "happy"
-    "sadness"
-    "fear"
-    "ground state"
+    "Neutral"
+    "Anger"
+    "Disgust"
+    "Happiness"
+    "Sadness"
+    "Fear"
+    "Ground state"
     ];
 
 stimuli = [...
@@ -49,7 +49,7 @@ stimuli = [...
     emotion_labels(5)
     ];
 
-non_anger_stimuli_indices = find(stimuli ~= 'anger') + 1;
+non_anger_stimuli_indices = find(stimuli ~= 'Anger') + 1;
 stimuli_no_anger = stimuli(non_anger_stimuli_indices - 1);
 
 if ~exist('cg_data', 'var') || ...

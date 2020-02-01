@@ -48,22 +48,27 @@ if flip_colors
     color_map = flipud(color_map);
 end
     
-
+tiledlayout(1,plot_count, 'TileSpacing', 'compact', 'Padding', 'compact');
 for n = 1:plot_count
+   nexttile;
    % We leave one empty to attach colorbar after the loop
-   subplot(1, plot_count+1, n); 
+   %subplot(1, plot_count, n); 
    helpers.plot.single_figure(data(:,:,n), color_map, color_limits);
    if use_labels
        t = title(labels(n), 'FontSize', 14);
        set(t, 'Rotation', 90.0, 'VerticalAlignment', 'middle', 'HorizontalAlignment', 'left');
    end
+   %plot_size = get(gca, 'Position');
 end
-subplot(1, plot_count+1, plot_count+1);
-image_handle = helpers.plot.single_figure(data(:,:,n), color_map, color_limits);
-axis_handle = image_handle.Parent;
-colorbar(axis_handle);
-image_handle.Visible = false;
-axis_handle.Visible = false;
+% subplot(1, plot_count+1, plot_count+1);
+% image_handle = helpers.plot.single_figure(data(:,:,n), color_map, color_limits);
+% axis_handle = image_handle.Parent;
+c = colorbar(gca);
+c.FontSize = 14;
+%ylabel(c, '');
+%set(gca, 'Position', plot_size);
+% image_handle.Visible = false;
+% axis_handle.Visible = false;
 
 end
 

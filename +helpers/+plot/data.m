@@ -54,7 +54,8 @@ for n = 1:plot_count
    subplot(1, plot_count+1, n); 
    helpers.plot.single_figure(data(:,:,n), color_map, color_limits);
    if use_labels
-       title(labels(n));
+       t = title(labels(n), 'FontSize', 14);
+       set(t, 'Rotation', 90.0, 'VerticalAlignment', 'middle', 'HorizontalAlignment', 'left');
    end
 end
 subplot(1, plot_count+1, plot_count+1);

@@ -38,10 +38,10 @@ if nargin < 3
     hotmap = hot(num_colors);
     coldmap = flipud([hotmap(:,3) hotmap(:,2) hotmap(:,1) ]);
     color_map = [coldmap; hotmap];
-    sgtitle('no threshold');
+    %sgtitle('no threshold');
 else
     color_map = helpers.plot.color_map(data_max, threshold, num_colors);
-    sgtitle(['threshold: ', num2str(threshold)]);
+    %sgtitle(['threshold: ', num2str(threshold)]);
 end
 
 if flip_colors

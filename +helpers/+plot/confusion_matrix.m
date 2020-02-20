@@ -1,4 +1,4 @@
-function image_handle = confusion_matrix(confusion_table)
+function image_handle = confusion_matrix(confusion_table, labels)
 % Note: If RGB colors are possible, matlab colormap 'jet' is a good
 % alternative.
 
@@ -15,7 +15,7 @@ graymap = gray(lim_max - chance_level);
 graymap = flipud(graymap);
 map = [ones(chance_level,3); graymap];
 
-figure;
+figure_handle = figure;
 image_handle = imagesc(confusion_table.Variables, limits);
 axes = image_handle.Parent;
 colorbar(axes);
@@ -25,16 +25,21 @@ colormap(axes, map);
 daspect([1 1 1 ]);
 
 % Tick Properties
-yticks(1:prop_count);
 xticks(1:prop_count);
-if prop_count == 6
-    xticklabels({'Anger', 'Disgust', 'Happiness', 'Sadness', 'Fear', 'Neutral'});
-    yticklabels({'Anger', 'Disgust', 'Happiness', 'Sadness', 'Fear', 'Neutral'});
-else
-    xticklabels({'Disgust', 'Happiness', 'Sadness', 'Fear', 'Neutral'});
-    yticklabels({'Disgust', 'Happiness', 'Sadness', 'Fear', 'Neutral'});
-end
+yticks(1:prop_count);
+xticklabels(labels);
+yticklabels(labels);
+
 xtickangle(45);
+axes.XAxisLocation = 'top';
 axes.TickLength = [0 0];
+
+% Labels
+axes.XLabel.String = "Predicted Classes";
+%axes.XLabel.Position = xlabelPosition;
+axes.YLabel.String = "True Classes";
+
+axes.FontSize = 22;
+figure_handle.Position = [0 0 725 615];
 end
 

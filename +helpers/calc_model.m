@@ -22,7 +22,13 @@ cv_model = crossval(lda_model, 'KFold', 5);
 correct_predictions = length(find(label == responses));
 accuracy = correct_predictions / length(label);
 
-[confusion_matrix, order] = confusionmat(responses, label);
+% Check if anger stimuli is present
+if any(strcmp(stimuli, 'Anger'))
+    conf_matrix_order = {'Neutral', 'Anger', 'Disgust', 'Happiness', 'Sadness', 'Fear'};
+else
+    conf_matrix_order = {'Neutral', 'Disgust', 'Happiness', 'Sadness', 'Fear'};
+end
+[confusion_matrix, order] = confusionmat(responses, label, 'order', conf_matrix_order);
 confusion_table = array2table(confusion_matrix, ...
     'RowNames', order, ...
     'VariableNames', order);

@@ -29,10 +29,14 @@ end
 num_colors = 64;
 data_max = max(data, [], 'all');
 if data_max == 0
-    color_limits = [-1,1];
+    lower_limit = -1;
+    upper_limit = 1;
 else
-    color_limits = [floor(-data_max),ceil(data_max)];
+    lower_limit = floor(-data_max);
+    upper_limit = ceil(data_max);
 end
+
+color_limits = [lower_limit, upper_limit];
 
 if nargin < 3
     hotmap = hot(num_colors);
@@ -58,6 +62,7 @@ end
 c = colorbar(gca);
 c.FontSize = 22;
 c.FontWeight = 'bold';
+c.Ticks = [lower_limit, lower_limit/2, 0 , upper_limit/2, upper_limit];
 
 if use_labels
     figure_position = [0 0 1000 575];

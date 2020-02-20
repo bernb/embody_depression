@@ -31,44 +31,40 @@ data_max = max(data, [], 'all');
 if data_max == 0
     color_limits = [-1,1];
 else
-    color_limits = [-data_max,data_max];
+    color_limits = [floor(-data_max),ceil(data_max)];
 end
 
 if nargin < 3
     hotmap = hot(num_colors);
     coldmap = flipud([hotmap(:,3) hotmap(:,2) hotmap(:,1) ]);
     color_map = [coldmap; hotmap];
-    %sgtitle('no threshold');
 else
     color_map = helpers.plot.color_map(data_max, threshold, num_colors);
-    %sgtitle(['threshold: ', num2str(threshold)]);
 end
 
 if flip_colors
     color_map = flipud(color_map);
 end
     
-tiledlayout(1,plot_count, 'TileSpacing', 'compact', 'Padding', 'compact');
+tiledlayout(1,plot_count, 'TileSpacing', 'compact');
 for n = 1:plot_count
-   nexttile;
-   % We leave one empty to attach colorbar after the loop
-   %subplot(1, plot_count, n); 
-   helpers.plot.single_figure(data(:,:,n), color_map, color_limits);
-   if use_labels
-       t = title(labels(n), 'FontSize', 14);
-       set(t, 'Rotation', 90.0, 'VerticalAlignment', 'middle', 'HorizontalAlignment', 'left');
-   end
-   %plot_size = get(gca, 'Position');
+    nexttile;
+    helpers.plot.single_figure(data(:,:,n), color_map, color_limits);
+    if use_labels
+        t = title(labels(n), 'FontSize', 22);
+        set(t, 'Rotation', 90.0, 'VerticalAlignment', 'middle', 'HorizontalAlignment', 'left');
+    end
 end
-% subplot(1, plot_count+1, plot_count+1);
-% image_handle = helpers.plot.single_figure(data(:,:,n), color_map, color_limits);
-% axis_handle = image_handle.Parent;
 c = colorbar(gca);
-c.FontSize = 14;
-%ylabel(c, '');
-%set(gca, 'Position', plot_size);
-% image_handle.Visible = false;
-% axis_handle.Visible = false;
+c.FontSize = 22;
+c.FontWeight = 'bold';
 
+if use_labels
+    figure_position = [0 0 1000 575];
+else
+    figure_position = [0 0 1000 400];
+end
+
+figure_handle.Position = figure_position;
 end
 

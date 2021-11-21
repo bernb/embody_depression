@@ -1,6 +1,5 @@
 function data=load_subj(folder,option)
-    list=csvread([folder '/presentation.txt']);
-    N=length(list);
+    N=length(dir(folder+"/*.csv"));
     if(option==0)
         disp('here')
         for n=0:N-1

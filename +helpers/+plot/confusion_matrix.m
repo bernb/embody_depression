@@ -1,7 +1,10 @@
-function image_handle = confusion_matrix(confusion_table, labels)
+function image_handle = confusion_matrix(confusion_table, labels, with_colors)
 % Note: If RGB colors are possible, matlab colormap 'jet' is a good
 % alternative.
 
+if nargin == 2
+    with_colors = false;
+end
 
 % If we have 30*25 = 750 trials with 6 emotions, so max. correct answer is
 % 750/6 = 120
@@ -10,10 +13,14 @@ limits = [0 lim_max];
 chance_level = round(lim_max / height(confusion_table));
 prop_count = length(confusion_table.Properties.VariableNames);
 
-% We color in white everything below chance level (lim_max / emotion_count)
-graymap = gray(lim_max - chance_level);
-graymap = flipud(graymap);
-map = [ones(chance_level,3); graymap];
+if with_colors
+    map = "jet";
+else
+    % We color in white everything below chance level (lim_max / emotion_count)
+    graymap = gray(lim_max - chance_level);
+    graymap = flipud(graymap);
+    map = [ones(chance_level,3); graymap]; 
+end
 
 figure_handle = figure;
 image_handle = imagesc(confusion_table.Variables, limits);
